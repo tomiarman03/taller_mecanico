@@ -70,7 +70,7 @@
                                 $stmt->execute([$name, $surname]);
                                 $id_client = $db->lastInsertId();
 
-                                $stmt = $db->prepare('INSERT INTO vehicles (id_client, brand, model, year_model, mileage, patent) VALUES (?, ?, ?, ?, ?)');
+                                $stmt = $db->prepare('INSERT INTO vehicles (id_client, brand, model, year_model, mileage, patent) VALUES (?, ?, ?, ?, ?, ?)');
                                 $stmt->execute([$id_client, $brand, $model, $year_model, $mileage, $patent]);
                                 $id_vehicle = $db->lastInsertId();
 

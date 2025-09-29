@@ -75,7 +75,7 @@
                         echo "<td><div class='camp_table'>" . $row['brand'] . "</div></td>";
                         echo "<td><div class='camp_table'>" . $row['model'] . "</div></td>";
                         echo "<td><div class='camp_table'>" . $row['year_model'] . "</div></td>";
-                        echo "<td><div class='camp_table'>" . $row['mileage'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['mileage'] . " Km" . "</div></td>";
                         echo "<td><div class='camp_table'>" . $row['patent'] . "</div></td>";
                         echo "<td><div class='camp_table'>" . $row['entry_date'] . "</div></td>";
                         echo "<td><div class='camp_table'>" . $row['descript'] . "</div></td>";

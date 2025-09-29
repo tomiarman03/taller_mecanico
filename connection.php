@@ -16,11 +16,11 @@ try {
     $db->exec("
         CREATE TABLE IF NOT EXISTS vehicles (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        id_client INTEGER DEFAULT NULL,
+        id_client INTEGER NOT NULL,
         brand TEXT NOT NULL,
         model TEXT NOT NULL,
-        year_model int(11) DEFAULT NULL,
-        mileage int(11) NOT NULL,
+        year_model INTEGER DEFAULT NULL,
+        mileage INTEGER NOT NULL,
         patent TEXT NOT NULL
     )
     ");
