@@ -1,0 +1,121 @@
+<?php
+    include("connection.php");
+
+    $patentFilter = "";
+    $params = [];
+
+    if (isset($_GET['patent']) && !empty($_GET['patent'])) {
+        $patentFilter = " WHERE v.patent LIKE ?";
+        $params[] = "%" . $_GET['patent'] . "%";
+    }
+
+    $limit = 5; // registros por página
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    if ($page < 1) $page = 1;
+    $offset = ($page - 1) * $limit;
+
+    // Consulta principal
+    $query = "SELECT c.name, c.surname, v.brand, v.model, v.year_model, v.mileage, v.patent, 
+                    r.entry_date, r.descript
+            FROM register r
+            INNER JOIN clients c ON r.id_client = c.id
+            INNER JOIN vehicles v ON r.id_vehicle = v.id
+            $patentFilter
+            ORDER BY r.entry_date DESC
+            LIMIT ? OFFSET ?";
+
+    $params[] = $limit;
+    $params[] = $offset;
+
+    $stmt = $db->prepare($query);
+    $stmt->execute($params);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/style_register.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <title>Gestor de vehiculos</title>
+</head>
+<body>
+    <div class="main_container">
+        <h1>HISTORIAL DE INGRESOS</h1>
+        <form  class="search_form" method="GET" action="register.php">
+            <input type="text" class="search_input" name="patent" placeholder="Buscar por patente" value="<?php echo isset($_GET['patent']) ? $_GET['patent'] : ''; ?>">
+            <div class="button_search_content">
+                <button type="submit" class="input_btns">Buscar</button>
+                <button type="button" class="input_btns" onclick="window.location.href='register.php'">Borrar filtro</button>
+            </div>
+        </form>
+        <div class="background_table">
+            <?php
+                 if ($results && count($results) > 0) {
+                    echo "<table class='register_table' style='border: 2px inset black; border-collapse: collapse;'>";
+                    echo "<tr>
+                            <td class='main_camp_content'><div class='camp_table'>Nombre</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Apellido</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Marca</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Modelo</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Año</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Kilometraje</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Patente</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Fecha de ingreso</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Descripción</div></td>
+                        </tr>";
+                    foreach ($results as $row) {
+                        echo "<tr>";
+                        echo "<td><div class='camp_table'>" . $row['name'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['surname'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['brand'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['model'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['year_model'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['mileage'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['patent'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['entry_date'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['descript'] . "</div></td>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                } else {
+                    echo "<p>No se encontraron registros.</p>";
+                }    
+            ?>
+        </div>
+        <div>
+            <?php
+                $countQuery = "SELECT COUNT(*) as total
+                               FROM register r
+                               INNER JOIN clients c ON r.id_client = c.id
+                               INNER JOIN vehicles v ON r.id_vehicle = v.id
+                               " . ($patentFilter ?: "");
+
+                $countStmt = $db->prepare($countQuery);
+                $countStmt->execute(isset($params) ? array_slice($params, 0, count($params)-2) : []);
+                $totalRows = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+                $totalPages = ceil($totalRows / $limit);
+
+                echo "<div class='pagination'>";
+                for ($i = 1; $i <= $totalPages; $i++) {
+                    $url = "register.php?page=$i";
+                    if (!empty($_GET['patent'])) {
+                        $url .= "&patent=" . urlencode($_GET['patent']);
+                    }
+                    echo "<a class='page_numbers' href='$url' style='margin: 0 5px; " . 
+                        ($i == $page ? "font-weight:bold; color:#fc5555;" : "") . "'>$i</a>";
+                }
+                echo "</div>";
+            ?>
+        </div>
+        <div class="back_btn_container">
+            <button class="back_btn" onclick="window.location.href='index.php'">Volver</button>
+        </div>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,101 @@
+@font-face {
+    font-family: 'Oswald';
+    src: url('../fonts/Oswald-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+*{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: "Oswald", sans-serif;
+}
+
+title{
+    display: none;
+}
+
+.form{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: #CCC;
+    border-style: inset;
+    border-color: black;
+    width: 42em;
+}
+
+input{
+    width: 100%;
+}
+
+.form_info{
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+    margin-bottom: 60px;
+}
+
+.form_answer{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.submit_btn{
+    background-color: white;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+    transform: scale(1);
+    transition: 0.1s;
+}
+
+.submit_btn:focus{
+    transform: scale(0.97);
+    transition: 0.1s;
+}
+
+.success_txt{
+    background-color: #8afc55;
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding-inline: 5px;
+    border-radius: 2px;
+}
+
+.error_txt{
+    background-color: #fc5555;
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding-inline: 5px;
+    border-radius: 2px;
+}
+
+.history_btn{
+    display: flex;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: white;
+    margin-top: 20px;
+    cursor: pointer;
+    transform: scale(1);
+    transition: 0.1s;
+}
+
+.history_btn:focus{
+    transform: scale(0.97);
+    transition: 0.1s;
+}
