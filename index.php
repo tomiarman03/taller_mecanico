@@ -9,7 +9,7 @@
     <title>Gestor de vehiculos</title>
 </head>
 <body>
-    <h1>GESTOR DE VEHÍCULOS</h1>
+    <h1><b>GESTOR DE VEHÍCULOS</b></h1>
     <h2>INGRESO</h2>
     <div class="form">
         <form action="index.php" method="post">
