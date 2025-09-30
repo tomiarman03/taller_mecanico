@@ -16,30 +16,36 @@
             <div class="form_info">
                 <div class="form_container">
                     <h3>Datos del cliente</h3>
-                    <label for="name">Nombre</label>
-                    <input type="text" name="name" required>
-                    <label for="surname">Apellido</label>
-                    <input type="text" name="surname" required>
+                    <div class="inputs_container">
+                        <label for="name">Nombre</label>
+                        <input type="text" name="name" required>
+                        <label for="surname">Apellido</label>
+                        <input type="text" name="surname" required>
+                    </div>
                 </div>
                 <div class="form_container">
                     <h3>Datos del vehículo</h3>
-                    <label for="brand">Marca</label>
-                    <input type="text" name="brand" required>
-                    <label for="model">Modelo</label>
-                    <input type="text" name="model" required>
-                    <label for="year_model">Año</label>
-                    <input type="number" name="year_model">
-                    <label for="mileage">Kilometraje</label>
-                    <input type="number" name="mileage">
-                    <label for="patent">Patente</label>
-                    <input type="text" name="patent" required>
+                    <div class="inputs_container">
+                        <label for="brand">Marca</label>
+                        <input type="text" name="brand" required>
+                        <label for="model">Modelo</label>
+                        <input type="text" name="model" required>
+                        <label for="year_model">Año</label>
+                        <input type="number" name="year_model">
+                        <label for="mileage">Kilometraje</label>
+                        <input type="number" name="mileage">
+                        <label for="patent">Patente</label>
+                        <input type="text" name="patent" required>
+                    </div>
                 </div>
-                <div class="form_container">
+                <div class="form_container">    
                     <h3>Motivo y fecha de ingreso</h3>
-                    <label for="descript">Descripción</label>
-                    <input type="text" name="descript">
-                    <label for="entry_date">Fecha de ingreso</label>
-                    <input type="date" name="entry_date" required>
+                    <div class="inputs_container">
+                        <label for="descript">Descripción</label>
+                        <input type="text" name="descript">
+                        <label for="entry_date">Fecha de ingreso</label>
+                        <input type="date" name="entry_date" required>
+                    </div>
                 </div>
             </div>
             <div class="form_answer">
@@ -71,7 +77,7 @@
                                 $id_client = $db->lastInsertId();
 
                                 $stmt = $db->prepare('INSERT INTO vehicles (id_client, brand, model, year_model, mileage, patent) VALUES (?, ?, ?, ?, ?, ?)');
-                                $stmt->execute([$id_client, $brand, $model, $year_model, $mileage, $patent]);
+                            $stmt->execute([$id_client, $brand, $model, $year_model, $mileage, $patent]);
                                 $id_vehicle = $db->lastInsertId();
 
                                 $stmt = $db->prepare('INSERT INTO register (id_client, id_vehicle, descript, entry_date) VALUES (?, ?, ?, ?)');
