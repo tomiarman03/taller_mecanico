@@ -11,7 +11,7 @@
 <body>
     <h1>ALTA DE VEHÍCULO</h1>
     <div class="form">
-        <form action="index.php" method="post">
+        <form action="register.php" method="post">
             <div class="form_info">
                 <div class="form_container">
                     <h3>Datos del cliente</h3>
@@ -75,12 +75,12 @@
                                 $stmt->execute([$name, $surname]);
                                 $id_client = $db->lastInsertId();
 
-                                $stmt = $db->prepare('INSERT INTO vehicles (id_client, brand, model, year_model, patent, mileage) VALUES (?, ?, ?, ?, ?, ?)');
-                                $stmt->execute([$id_client, $brand, $model, $year_model, $patent,$mileage]);
+                                $stmt = $db->prepare('INSERT INTO vehicles (id_client, brand, model, year_model, patent) VALUES (?, ?, ?, ?, ?)');
+                                $stmt->execute([$id_client, $brand, $model, $year_model, $patent]);
                                 $id_vehicle = $db->lastInsertId();
 
-                                $stmt = $db->prepare('INSERT INTO register (id_client, id_vehicle, descript, entry_date) VALUES (?, ?, ?, ?)');
-                                $success = $stmt->execute([$id_client, $id_vehicle, $descript, $entry_date]);
+                                $stmt = $db->prepare('INSERT INTO register (id_client, id_vehicle, mileage, descript, entry_date) VALUES (?, ?, ?, ?, ?)');
+                                $success = $stmt->execute([$id_client, $id_vehicle, $mileage,  $descript, $entry_date]);
 
                                 if($success){
                                     $message = "<div class='success_txt'>Vehículo ingresado con éxito</div>";

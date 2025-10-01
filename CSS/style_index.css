@@ -86,6 +86,14 @@ td{
     background-color: white;
     border: none;
     padding: 0;
+    cursor: pointer;
+    transform: scale(1);
+    transition: 0.1s;
+}
+
+.edit_btn:focus{
+    transform: scale(0.9);
+    transition: 0.1s;  
 }
 
 .edit_camp_table{
