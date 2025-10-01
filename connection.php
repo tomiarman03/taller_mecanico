@@ -20,7 +20,6 @@ try {
         brand TEXT NOT NULL,
         model TEXT NOT NULL,
         year_model INTEGER DEFAULT NULL,
-        mileage INTEGER NOT NULL,
         patent TEXT NOT NULL
     )
     ");
@@ -30,6 +29,7 @@ try {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         id_client INTEGER DEFAULT NULL,
         id_vehicle INTEGER DEFAULT NULL,
+        mileage INTEGER NOT NULL,
         entry_date date NOT NULL,
         descript varchar(100) DEFAULT NULL
     )

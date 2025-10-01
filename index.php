@@ -1,107 +1,116 @@
+<?php
+    include("connection.php");
+
+    $patentFilter = "";
+    $params = [];
+
+    if (isset($_GET['patent']) && !empty($_GET['patent'])) {
+        $patentFilter = " WHERE v.patent LIKE ?";
+        $params[] = "%" . $_GET['patent'] . "%";
+    }
+
+    $limit = 8; // registros por página
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    if ($page < 1) $page = 1;
+    $offset = ($page - 1) * $limit;
+
+    // Consulta principal
+    $query = "SELECT c.name, c.surname, v.brand, v.model, v.year_model, v.patent
+            FROM register r
+            INNER JOIN clients c ON r.id_client = c.id
+            INNER JOIN vehicles v ON r.id_vehicle = v.id
+            $patentFilter
+            ORDER BY r.entry_date DESC
+            LIMIT ? OFFSET ?";
+
+    $params[] = $limit;
+    $params[] = $offset;
+
+    $stmt = $db->prepare($query);
+    $stmt->execute($params);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="CSS/style_index.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=edit" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
     <title>Gestor de vehiculos</title>
 </head>
 <body>
-    <h1><b>GESTOR DE VEHÍCULOS</b></h1>
-    <h2>INGRESO</h2>
-    <div class="form">
-        <form action="index.php" method="post">
-            <div class="form_info">
-                <div class="form_container">
-                    <h3>Datos del cliente</h3>
-                    <div class="inputs_container">
-                        <label for="name">Nombre</label>
-                        <input type="text" name="name" required>
-                        <label for="surname">Apellido</label>
-                        <input type="text" name="surname" required>
-                    </div>
-                </div>
-                <div class="form_container">
-                    <h3>Datos del vehículo</h3>
-                    <div class="inputs_container">
-                        <label for="brand">Marca</label>
-                        <input type="text" name="brand" required>
-                        <label for="model">Modelo</label>
-                        <input type="text" name="model" required>
-                        <label for="year_model">Año</label>
-                        <input type="number" name="year_model">
-                        <label for="mileage">Kilometraje</label>
-                        <input type="number" name="mileage">
-                        <label for="patent">Patente</label>
-                        <input type="text" name="patent" required>
-                    </div>
-                </div>
-                <div class="form_container">    
-                    <h3>Motivo y fecha de ingreso</h3>
-                    <div class="inputs_container">
-                        <label for="descript">Descripción</label>
-                        <input type="text" name="descript">
-                        <label for="entry_date">Fecha de ingreso</label>
-                        <input type="date" name="entry_date" required>
-                    </div>
-                </div>
-            </div>
-            <div class="form_answer">
-                <?php
-                    include 'connection.php';
-
-                    $message = '';
-
-                    if(isset($_POST['submit'])){
-
-                        $patent = strtoupper(trim($_POST['patent']));
-                        $pattern = "/^([A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{3}[A-Z]{2})$/";
-
-                        if (!preg_match($pattern, $patent)) {
-                            $message = "<div class='error_txt'>Patente inválida. Debe ser 'ABC123' o 'AB123CD'</div>";
-                        } else {
-                            $name = $_POST['name'];
-                            $surname = $_POST['surname'];
-                            $brand = $_POST['brand'];
-                            $model = $_POST['model'];
-                            $year_model = $_POST['year_model'];
-                            $mileage = $_POST['mileage'];
-                            $descript = $_POST['descript'];
-                            $entry_date = $_POST['entry_date'];
-
-                            try {
-                                $stmt = $db->prepare('INSERT INTO clients (name, surname) VALUES (?, ?)');
-                                $stmt->execute([$name, $surname]);
-                                $id_client = $db->lastInsertId();
-
-                                $stmt = $db->prepare('INSERT INTO vehicles (id_client, brand, model, year_model, mileage, patent) VALUES (?, ?, ?, ?, ?, ?)');
-                            $stmt->execute([$id_client, $brand, $model, $year_model, $mileage, $patent]);
-                                $id_vehicle = $db->lastInsertId();
-
-                                $stmt = $db->prepare('INSERT INTO register (id_client, id_vehicle, descript, entry_date) VALUES (?, ?, ?, ?)');
-                                $success = $stmt->execute([$id_client, $id_vehicle, $descript, $entry_date]);
-
-                                if($success){
-                                    $message = "<div class='success_txt'>Vehículo ingresado con éxito</div>";
-                                } else {
-                                    $message = "<div class='error_txt'>Error: " . $stmt->errorInfo()[2] . "</div>";
-                                }
-
-                            } catch (Exception $e) {
-                                $message = "<div class='error_txt'>Error: " . $e->getMessage() . "</div>";
-                            }
-                        }
-                    }
-                ?>
-                <?php echo $message; ?>
-                <input class="submit_btn" type="submit" name="submit" value="Ingresar">
+    <div class="main_container">
+        <h1>GESTOR DE VEHÍCULOS</h1>
+        <form  class="search_form" method="GET" action="index.php">
+            <input type="text" class="search_input" name="patent" placeholder="Buscar por patente" value="<?php echo isset($_GET['patent']) ? $_GET['patent'] : ''; ?>">
+            <div class="button_search_content">
+                <button type="submit" class="input_btns">Buscar</button>
+                <button type="button" class="input_btns" onclick="window.location.href='index.php'">Borrar filtro</button>
             </div>
         </form>
+        <div class="background_table">
+            <?php
+                 if ($results && count($results) > 0) {
+                    echo "<table class='register_table' style='border: 2px inset black; border-collapse: collapse;'>";
+                    echo "<tr>
+                            <td class='main_camp_content'><div class='camp_table'>Nombre</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Apellido</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Marca</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Modelo</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Año</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Patente</div></td>
+                        </tr>";
+                    foreach ($results as $row) {
+                        echo "<tr>";
+                        echo "<td><div class='camp_table'>" . $row['name'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['surname'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['brand'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['model'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['year_model'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['patent'] . "</div></td>";
+                        echo "<td class='edit_camp_table'><div class='camp_table'><button type='button' class='edit_btn' onclick=\"window.location.href='register.php'\"><img src='images/edit_icon.png'></button></div></td>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                } else {
+                    echo "<p>No se encontraron registros.</p>";
+                }    
+            ?>
+        </div>
+        <div>
+            <?php
+                $countQuery = "SELECT COUNT(*) as total
+                               FROM register r
+                               INNER JOIN clients c ON r.id_client = c.id
+                               INNER JOIN vehicles v ON r.id_vehicle = v.id
+                               " . ($patentFilter ?: "");
+
+                $countStmt = $db->prepare($countQuery);
+                $countStmt->execute(isset($params) ? array_slice($params, 0, count($params)-2) : []);
+                $totalRows = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+                $totalPages = ceil($totalRows / $limit);
+
+                echo "<div class='pagination'>";
+                for ($i = 1; $i <= $totalPages; $i++) {
+                    $url = "register.php?page=$i";
+                    if (!empty($_GET['patent'])) {
+                        $url .= "&patent=" . urlencode($_GET['patent']);
+                    }
+                    echo "<a class='page_numbers' href='$url' style='margin: 0 5px; " . 
+                        ($i == $page ? "font-weight:bold; color:#fc5555;" : "") . "'>$i</a>";
+                }
+                echo "</div>";
+            ?>
+        </div>
+        <div class="back_btn_container">
+            <button class="back_btn" onclick="window.location.href='register.php'">Ingresar un vehículo</button>
+        </div>
     </div>
-    <div class="history_btn_container">
-        <button class="history_btn" onclick="window.location.href='register.php'">Ver historial</button>
-    </div>
+    
 </body>
 </html>
