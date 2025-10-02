@@ -1,3 +1,5 @@
+
+
 <?php
     include("connection.php");
 
@@ -15,7 +17,7 @@
     $offset = ($page - 1) * $limit;
 
     // Consulta principal
-    $query = "SELECT c.name, c.surname, v.brand, v.model, v.year_model, v.patent
+    $query = "SELECT c.name, c.surname, c.phone, v.brand, v.model, v.year_model, v.patent, r.mileage, r.entry_date, r.descript
             FROM register r
             INNER JOIN clients c ON r.id_client = c.id
             INNER JOIN vehicles v ON r.id_vehicle = v.id
@@ -45,7 +47,7 @@
 </head>
 <body>
     <div class="main_container">
-        <h1>GESTOR DE VEHÍCULOS</h1>
+        <h1>GESTOR TALLER</h1>
         <form  class="search_form" method="GET" action="index.php">
             <input type="text" class="search_input" name="patent" placeholder="Buscar por patente" value="<?php echo isset($_GET['patent']) ? $_GET['patent'] : ''; ?>">
             <div class="button_search_content">
@@ -60,20 +62,29 @@
                     echo "<tr>
                             <td class='main_camp_content'><div class='camp_table'>Nombre</div></td>
                             <td class='main_camp_content'><div class='camp_table'>Apellido</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Teléfono</div></td>
                             <td class='main_camp_content'><div class='camp_table'>Marca</div></td>
                             <td class='main_camp_content'><div class='camp_table'>Modelo</div></td>
                             <td class='main_camp_content'><div class='camp_table'>Año</div></td>
                             <td class='main_camp_content'><div class='camp_table'>Patente</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Kilometraje</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Fecha de ingreso</div></td>
+                            <td class='main_camp_content'><div class='camp_table'>Descripción</div></td>
+                            <td class='main_camp_content'><div class='camp_table'></div></td>
                         </tr>";
                     foreach ($results as $row) {
                         echo "<tr>";
                         echo "<td><div class='camp_table'>" . $row['name'] . "</div></td>";
                         echo "<td><div class='camp_table'>" . $row['surname'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['phone'] . "</div></td>";
                         echo "<td><div class='camp_table'>" . $row['brand'] . "</div></td>";
                         echo "<td><div class='camp_table'>" . $row['model'] . "</div></td>";
                         echo "<td><div class='camp_table'>" . $row['year_model'] . "</div></td>";
                         echo "<td><div class='camp_table'>" . $row['patent'] . "</div></td>";
-                        echo "<td class='edit_camp_table'><div class='camp_table'><button type='button' class='edit_btn' onclick=\"window.location.href='register.php'\"><img src='images/edit_icon.png'></button></div></td>";
+                        echo "<td><div class='camp_table'>" . number_format($row['mileage'], 0, ',', '.') . "Km" . "</div></td>";
+                        echo "<td><div class='camp_table'>" . date("d/m/Y", strtotime($row['entry_date'])) . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $row['descript'] . "</div></td>";
+                        echo "<td class='edit_camp_table'><div class='camp_table'><button type='button' class='edit_btn' onclick=\"window.location.href='register_edit.php'\"><img src='images/edit_icon.png'></button></div></td>";
                         echo "</tr>";
                     }
                     echo "</table>";

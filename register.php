@@ -20,6 +20,8 @@
                         <input type="text" name="name" required>
                         <label for="surname">Apellido</label>
                         <input type="text" name="surname" required>
+                        <label for="phone">Teléfono</label>
+                        <input type="text" name="phone" required>
                     </div>
                 </div>
                 <div class="form_container">
@@ -34,7 +36,7 @@
                         <label for="patent">Patente</label>
                         <input type="text" name="patent" required>                        
                         <label for="mileage">Kilometraje</label>
-                        <input type="number" name="mileage">
+                        <input type="number" name="mileage" required>
                     </div>
                 </div>
                 <div class="form_container">    
@@ -63,6 +65,7 @@
                         } else {
                             $name = $_POST['name'];
                             $surname = $_POST['surname'];
+                            $phone = $_POST['phone'];
                             $brand = $_POST['brand'];
                             $model = $_POST['model'];
                             $year_model = $_POST['year_model'];
@@ -71,8 +74,8 @@
                             $entry_date = $_POST['entry_date'];
 
                             try {
-                                $stmt = $db->prepare('INSERT INTO clients (name, surname) VALUES (?, ?)');
-                                $stmt->execute([$name, $surname]);
+                                $stmt = $db->prepare('INSERT INTO clients (name, surname, phone) VALUES (?, ?, ?)');
+                                $stmt->execute([$name, $surname, $phone]);
                                 $id_client = $db->lastInsertId();
 
                                 $stmt = $db->prepare('INSERT INTO vehicles (id_client, brand, model, year_model, patent) VALUES (?, ?, ?, ?, ?)');
