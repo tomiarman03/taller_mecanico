@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="CSS/style_register.css">
+    <link rel="stylesheet" href="CSS/style_add_register.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <title>Gestor de vehiculos</title>
@@ -11,7 +11,7 @@
 <body>
     <h1>ALTA DE VEHÍCULO</h1>
     <div class="form">
-        <form action="register.php" method="post">
+        <form action="add_register.php" method="post">
             <div class="form_info">
                 <div class="form_container">
                     <h3>Datos del cliente</h3>

@@ -60,17 +60,17 @@
                  if ($results && count($results) > 0) {
                     echo "<table class='register_table' style='border: 2px inset black; border-collapse: collapse;'>";
                     echo "<tr>
-                            <td class='main_camp_content'><div class='camp_table'>Nombre</div></td>
-                            <td class='main_camp_content'><div class='camp_table'>Apellido</div></td>
-                            <td class='main_camp_content'><div class='camp_table'>Teléfono</div></td>
-                            <td class='main_camp_content'><div class='camp_table'>Marca</div></td>
-                            <td class='main_camp_content'><div class='camp_table'>Modelo</div></td>
-                            <td class='main_camp_content'><div class='camp_table'>Año</div></td>
-                            <td class='main_camp_content'><div class='camp_table'>Patente</div></td>
-                            <td class='main_camp_content'><div class='camp_table'>Kilometraje</div></td>
-                            <td class='main_camp_content'><div class='camp_table'>Fecha de ingreso</div></td>
-                            <td class='main_camp_content'><div class='camp_table'>Descripción</div></td>
-                            <td class='main_camp_content'><div class='camp_table'></div></td>
+                            <td class='main_camp_table'><div class='camp_table'>Nombre</div></td>
+                            <td class='main_camp_table'><div class='camp_table'>Apellido</div></td>
+                            <td class='main_camp_table'><div class='camp_table'>Teléfono</div></td>
+                            <td class='main_camp_table'><div class='camp_table'>Marca</div></td>
+                            <td class='main_camp_table'><div class='camp_table'>Modelo</div></td>
+                            <td class='main_camp_table'><div class='camp_table'>Año</div></td>
+                            <td class='main_camp_table'><div class='camp_table'>Patente</div></td>
+                            <td class='main_camp_table'><div class='camp_table'>Kilometraje</div></td>
+                            <td class='main_camp_table'><div class='camp_table'>Fecha de ingreso</div></td>
+                            <td class='main_camp_table'><div class='camp_table'>Descripción</div></td>
+                            <td class='main_camp_table'><div class='camp_table'></div></td>
                         </tr>";
                     foreach ($results as $row) {
                         echo "<tr>";
@@ -108,7 +108,7 @@
 
                 echo "<div class='pagination'>";
                 for ($i = 1; $i <= $totalPages; $i++) {
-                    $url = "register.php?page=$i";
+                    $url = "index.php?page=$i";
                     if (!empty($_GET['patent'])) {
                         $url .= "&patent=" . urlencode($_GET['patent']);
                     }
@@ -119,7 +119,7 @@
             ?>
         </div>
         <div class="back_btn_container">
-            <button class="back_btn" onclick="window.location.href='register.php'">Ingresar un vehículo</button>
+            <button class="back_btn" onclick="window.location.href='add_register.php'">Ingresar un vehículo</button>
         </div>
     </div>
     

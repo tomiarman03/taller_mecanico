@@ -11,6 +11,10 @@
     <title>Gestor de vehiculos</title>
 </head>
 <body>
+    <h1>MODIFICAR REGISTRO</h1>
     
+    <form action="regedit.php">
+
+    </form>
 </body>
 </html>

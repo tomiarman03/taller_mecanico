@@ -29,7 +29,7 @@ h1{
     background-color: #CCC;
     border-style: inset;
     border-color: black;
-    width: 810px;
+    width: 805px;
 }
 
 input{
@@ -40,7 +40,7 @@ input{
     display: flex;
     flex-direction: row;
     align-items: start;
-    gap: 40px;
+    gap: 30px;
     margin-top: 20px;
     margin-bottom: 60px;
 }
