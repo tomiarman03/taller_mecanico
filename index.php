@@ -1,5 +1,3 @@
-
-
 <?php
     include("connection.php");
 
@@ -11,22 +9,21 @@
         $params[] = "%" . $_GET['patent'] . "%";
     }
 
-    $limit = 8; // registros por página
+    $limit = 8;
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     if ($page < 1) $page = 1;
     $offset = ($page - 1) * $limit;
 
-    // Consulta principal
-    $query = "SELECT c.name, c.surname, c.phone, v.brand, v.model, v.year_model, v.patent, r.mileage, r.entry_date, r.descript
+    $query = "SELECT c.name, c.surname, c.phone, v.id, v.brand, v.model, v.year_model, v.patent, r.mileage, r.entry_date, r.descript
             FROM register r
             INNER JOIN clients c ON r.id_client = c.id
             INNER JOIN vehicles v ON r.id_vehicle = v.id
             $patentFilter
             ORDER BY r.entry_date DESC
-            LIMIT ? OFFSET ?";
+            /*LIMIT ? OFFSET ?*/";
 
-    $params[] = $limit;
-    $params[] = $offset;
+    //$params[] = $limit;
+    //$params[] = $offset;
 
     $stmt = $db->prepare($query);
     $stmt->execute($params);
@@ -84,7 +81,13 @@
                         echo "<td><div class='camp_table'>" . number_format($row['mileage'], 0, ',', '.') . "Km" . "</div></td>";
                         echo "<td><div class='camp_table'>" . date("d/m/Y", strtotime($row['entry_date'])) . "</div></td>";
                         echo "<td><div class='camp_table'>" . $row['descript'] . "</div></td>";
-                        echo "<td class='edit_camp_table'><div class='camp_table'><button type='button' class='edit_btn' onclick=\"window.location.href='register_edit.php'\"><img src='images/edit_icon.png'></button></div></td>";
+                        echo "<td class='edit_camp_table'>
+                                <div class='camp_table'>
+                                    <button type='button' class='edit_btn' onclick=\"window.location.href='regedit.php?id_vehicle=" . $row['id'] . "'\">
+                                        <img src='images/edit_icon.png'>
+                                    </button>
+                                </div>
+                              </td>";
                         echo "</tr>";
                     }
                     echo "</table>";
@@ -95,6 +98,7 @@
         </div>
         <div>
             <?php
+            /*
                 $countQuery = "SELECT COUNT(*) as total
                                FROM register r
                                INNER JOIN clients c ON r.id_client = c.id
@@ -116,6 +120,7 @@
                         ($i == $page ? "font-weight:bold; color:#fc5555;" : "") . "'>$i</a>";
                 }
                 echo "</div>";
+            */
             ?>
         </div>
         <div class="back_btn_container">
