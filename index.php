@@ -50,6 +50,7 @@
             <div class="button_search_content">
                 <button type="submit" class="input_btns">Buscar</button>
                 <button type="button" class="input_btns" onclick="window.location.href='index.php'">Borrar filtro</button>
+                <button type="button" class="input_btns" onclick="window.location.href='add_register.php'">Ingresar un vehículo</button>
             </div>
         </form>
         <div class="background_table">
@@ -69,25 +70,67 @@
                             <td class='main_camp_table'><div class='camp_table'>Descripción</div></td>
                             <td class='main_camp_table'><div class='camp_table'></div></td>
                         </tr>";
+                
+                    $grouped = [];
                     foreach ($results as $row) {
+                        $id = $row['id'];
+                        if (!isset($grouped[$id])) {
+                            $grouped[$id] = [
+                                'client' => [
+                                    'name' => $row['name'],
+                                    'surname' => $row['surname'],
+                                    'phone' => $row['phone'],
+                                    'brand' => $row['brand'],
+                                    'model' => $row['model'],
+                                    'year_model' => $row['year_model'],
+                                    'patent' => $row['patent']
+                                ],
+                                'entries' => []
+                            ];
+                        }
+
+                        $grouped[$id]['entries'][] = [
+                            'mileage' => $row['mileage'],
+                            'entry_date' => $row['entry_date'],
+                            'descript' => $row['descript']
+                        ];
+                    }
+                        
+                    foreach ($grouped as $id => $vehicle) {
                         echo "<tr>";
-                        echo "<td><div class='camp_table'>" . $row['name'] . "</div></td>";
-                        echo "<td><div class='camp_table'>" . $row['surname'] . "</div></td>";
-                        echo "<td><div class='camp_table'>" . $row['phone'] . "</div></td>";
-                        echo "<td><div class='camp_table'>" . $row['brand'] . "</div></td>";
-                        echo "<td><div class='camp_table'>" . $row['model'] . "</div></td>";
-                        echo "<td><div class='camp_table'>" . $row['year_model'] . "</div></td>";
-                        echo "<td><div class='camp_table'>" . $row['patent'] . "</div></td>";
-                        echo "<td><div class='camp_table'>" . number_format($row['mileage'], 0, ',', '.') . "Km" . "</div></td>";
-                        echo "<td><div class='camp_table'>" . date("d/m/Y", strtotime($row['entry_date'])) . "</div></td>";
-                        echo "<td><div class='camp_table'>" . $row['descript'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $vehicle['client']['name'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $vehicle['client']['surname'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $vehicle['client']['phone'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $vehicle['client']['brand'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $vehicle['client']['model'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $vehicle['client']['year_model'] . "</div></td>";
+                        echo "<td><div class='camp_table'>" . $vehicle['client']['patent'] . "</div></td>";
+
+                        echo "<td><div class='camp_table'>";
+                        foreach ($vehicle['entries'] as $entry) {
+                            echo number_format($entry['mileage'], 0, ',', '.') . "Km<br>";
+                        }
+                        echo "</div></td>";
+
+                        echo "<td><div class='camp_table'>";
+                        foreach ($vehicle['entries'] as $entry) {
+                            echo date("d/m/Y", strtotime($entry['entry_date'])) . "<br>";
+                        }
+                        echo "</div></td>";
+
+                        echo "<td><div class='camp_table'>";
+                        foreach ($vehicle['entries'] as $entry) {
+                            echo htmlspecialchars($entry['descript']) . "<br>";
+                        }
+                        echo "</div></td>";
+
                         echo "<td class='edit_camp_table'>
                                 <div class='camp_table'>
-                                    <button type='button' class='edit_btn' onclick=\"window.location.href='regedit.php?id_vehicle=" . $row['id'] . "'\">
+                                    <button type='button' class='edit_btn' onclick=\"window.location.href='regedit.php?id_vehicle=$id'\">
                                         <img src='images/edit_icon.png'>
                                     </button>
                                 </div>
-                              </td>";
+                            </td>";
                         echo "</tr>";
                     }
                     echo "</table>";
@@ -123,10 +166,6 @@
             */
             ?>
         </div>
-        <div class="back_btn_container">
-            <button class="back_btn" onclick="window.location.href='add_register.php'">Ingresar un vehículo</button>
-        </div>
     </div>
-    
 </body>
 </html>

@@ -32,9 +32,11 @@ h1{
 
 .modify_form{
     display: flex;
+    flex-direction: column;
     background-color: #AAA;
     border: inset black 3px;
     padding: 15px;
+    margin-bottom: 40px;
 }
 
 td {
@@ -65,4 +67,54 @@ input, textarea {
 
 input:focus, textarea:focus {
     outline: none;
+}
+
+.msg_container{
+    position: relative;
+    min-height: 15px;
+}
+
+.success_txt{
+    background-color: #8afc55;
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding-inline: 5px;
+    border-radius: 2px;
+}
+
+.error_txt{
+    background-color: #fc5555;
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding-inline: 5px;
+    border-radius: 2px;
+}
+
+.btns_container{
+    display: flex;
+    gap: 15px;
+}
+
+.input_btns{
+    font-family: "Oswald", sans-serif;
+    display: flex;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: white;
+    cursor: pointer;
+    transform: scale(1);
+    transition: 0.1s;
+}
+
+.input_btns:focus{
+    transform: scale(0.97);
+    transition: 0.1s;
 }
