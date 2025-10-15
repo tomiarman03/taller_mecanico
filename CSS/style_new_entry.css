@@ -13,10 +13,6 @@ body {
     align-items: center;
 }
 
-.form_container{
- 
-}
-
 form{
     display: flex;
     flex-direction: column;
