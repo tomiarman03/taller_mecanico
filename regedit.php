@@ -3,7 +3,7 @@
 
     $message = "";
 
-    $id_vehicle = isset($_GET['id_vehicle']) ? (int)$_GET['id_vehicle'] : (isset($_POST['id_vehicle']) ? (int)$_POST['id_vehicle'] : 0);
+    $id_register = isset($_GET['id_vehicle']) ? (int)$_GET['id_vehicle'] : (isset($_POST['id_vehicle']) ? (int)$_POST['id_vehicle'] : 0);
 
     if(isset($_POST['modify_btn'])){
         $patent = strtoupper(trim($_POST['patent']));
@@ -14,7 +14,6 @@
         } else{
             $id_client = $_POST['id_client'];
             $id_vehicle = $_POST['id_vehicle'];
-            $id_register = $_POST['id_register'];
 
             $name = $_POST['name'];
             $surname = $_POST['surname'];
@@ -22,9 +21,6 @@
             $brand = $_POST['brand'];
             $model = $_POST['model'];
             $year_model = $_POST['year_model'];
-            $mileage = $_POST['mileage'];
-            $entry_date = $_POST['entry_date'];
-            $descript = $_POST['descript'];
 
             $updateClient = "UPDATE clients SET name = ?, surname = ?, phone = ? WHERE id = ?";
             $stmtClient = $db->prepare($updateClient);
@@ -34,10 +30,17 @@
             $stmtVehicle = $db->prepare($updateVehicle);
             $stmtVehicle->execute([$brand, $model, $year_model, $patent, $id_vehicle]);
 
-            $updateRegister = "UPDATE register SET mileage = ?, entry_date = ?, descript = ? WHERE id = ?";
-            $stmtRegister = $db->prepare($updateRegister);
-            $stmtRegister->execute([$mileage, $entry_date, $descript, $id_register]);
-            
+            foreach ($_POST['id_registers'] as $id) {
+                $mileage    = $_POST["mileage_$id"] ?? null;
+                $entry_date = $_POST["entry_date_$id"] ?? null;
+                $descript   = $_POST["descript_$id"] ?? null;
+
+                if ($mileage && $entry_date && $descript) {
+                    $stmtRegister = $db->prepare("UPDATE register SET mileage = ?, entry_date = ?, descript = ? WHERE id = ?");
+                    $stmtRegister->execute([$mileage, $entry_date, $descript, $id]);
+                }
+            }
+
             $message = "<div class='success_txt'>Registro modificado correctamente.</div>";
         }
     }
@@ -50,11 +53,16 @@
     INNER JOIN clients c ON r.id_client = c.id
     INNER JOIN vehicles v ON r.id_vehicle = v.id
     WHERE v.id = ?
-    LIMIT 1";
+    ORDER BY r.entry_date ASC";
+
+    $id_vehicle = isset($_GET['id_vehicle']) ? (int)$_GET['id_vehicle'] : (isset($_POST['id_vehicle']) ? (int)$_POST['id_vehicle'] : 0);
 
     $stmt = $db->prepare($query);
     $stmt->execute([$id_vehicle]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $rowCount = count($rows);
+    $rowPrincipal = $rows[0];
+
 ?>
 
 <!DOCTYPE html>
@@ -74,39 +82,47 @@
         <h1>MODIFICAR REGISTRO</h1>
         <div class="modify_form">
             <form action="regedit.php" method="POST">
-                <input type="hidden" name="id_client" value="<?php echo $row['id_client']; ?>">
-                <input type="hidden" name="id_vehicle" value="<?php echo $row['id_vehicle']; ?>">
-                <input type="hidden" name="id_register" value="<?php echo $row['id_register']; ?>">   
-                <?php
-                    if($row){
-                        echo "<table class='mod_table' style='border: 2px inset black; border-collapse: collapse;'>";
-                        echo "<tr>
-                            <td class='main_camp_table'><div class='camp_table'>Nombre</div></td>
-                            <td class='main_camp_table'><div class='camp_table'>Apellido</div></td>
-                            <td class='main_camp_table'><div class='camp_table'>Teléfono</div></td>
-                            <td class='main_camp_table'><div class='camp_table'>Marca</div></td>
-                            <td class='main_camp_table'><div class='camp_table'>Modelo</div></td>
-                            <td class='main_camp_table'><div class='camp_table'>Año</div></td>
-                            <td class='main_camp_table'><div class='camp_table'>Patente</div></td>
-                            <td class='main_camp_table'><div class='camp_table'>Kilometraje</div></td>
-                            <td class='main_camp_table'><div class='camp_table'>Fecha de ingreso</div></td>
-                            <td class='main_camp_table'><div class='camp_table'>Descripción</div></td>
-                        </tr>";
-                        echo"<tr>
-                            <td><div class='camp_table'><input type='text' name='name' value='" . htmlspecialchars($row['name']) . "'></div></td>
-                            <td><div class='camp_table'><input type='text' name='surname' value='" . htmlspecialchars($row['surname']) . "'></div></td>
-                            <td><div class='camp_table'><input type='number' name='phone' value='" . htmlspecialchars($row['phone']) . "'></div></td>
-                            <td><div class='camp_table'><input type='text' name='brand' value='" . htmlspecialchars($row['brand']) . "'></div></td>
-                            <td><div class='camp_table'><input type='text' name='model' value='" . htmlspecialchars($row['model']) . "'></div></td>
-                            <td><div class='camp_table'><input type='number' name='year_model' value='" . htmlspecialchars($row['year_model']) . "'></div></td>
-                            <td><div class='camp_table'><input type='text' name='patent' value='" . htmlspecialchars($row['patent']) . "'></div></td>
-                            <td><div class='camp_table'><input type='number' name='mileage' value='" . htmlspecialchars($row['mileage']) . "'></div></td>
-                            <td><div class='camp_table'><input type='date' name='entry_date' value='" . htmlspecialchars($row['entry_date']) . "'></div></td>
-                            <td><div class='camp_table'><input type='text' name='descript' value='" . htmlspecialchars($row['descript']) . "'></div></td>
-                        </tr>";
-                        echo "</table>";
-                    }
-                ?>
+                <input type="hidden" name="id_client" value="<?= $rowPrincipal['id_client'] ?>">
+                <input type="hidden" name="id_vehicle" value="<?= $rowPrincipal['id_vehicle'] ?>">
+                <input type='hidden' name='id_registers[]' value='<?= $row['id_register'] ?>'>   
+                <table class="mod_table" style="border: 2px inset black; border-collapse: collapse;">
+                    <tr>
+                        <td class="main_camp_table">Nombre</td>
+                        <td class="main_camp_table">Apellido</td>
+                        <td class="main_camp_table">Teléfono</td>
+                        <td class="main_camp_table">Marca</td>
+                        <td class="main_camp_table">Modelo</td>
+                        <td class="main_camp_table">Año</td>
+                        <td class="main_camp_table">Patente</td>
+                        <td class="main_camp_table">Kilometraje</td>
+                        <td class="main_camp_table">Fecha de ingreso</td>
+                        <td class="main_camp_table">Descripción</td>
+                    </tr>
+                    <?php
+                        $first = true;
+                        $rowPrincipal = $rows[0];
+                        foreach ($rows as $row) {
+                            echo "<tr>";
+
+                            if ($first) {
+                                echo "<td rowspan='{$rowCount}'><input type='text' name='name' value='" . htmlspecialchars($row['name']) . "'></td>";
+                                echo "<td rowspan='{$rowCount}'><input type='text' name='surname' value='" . htmlspecialchars($row['surname']) . "'></td>";
+                                echo "<td rowspan='{$rowCount}'><input type='number' name='phone' value='" . htmlspecialchars($row['phone']) . "'></td>";
+                                echo "<td rowspan='{$rowCount}'><input type='text' name='brand' value='" . htmlspecialchars($row['brand']) . "'></td>";
+                                echo "<td rowspan='{$rowCount}'><input type='text' name='model' value='" . htmlspecialchars($row['model']) . "'></td>";
+                                echo "<td rowspan='{$rowCount}'><input type='number' name='year_model' value='" . htmlspecialchars($row['year_model']) . "'></td>";
+                                echo "<td rowspan='{$rowCount}'><input type='text' name='patent' value='" . htmlspecialchars($row['patent']) . "'></td>";
+                                $first = false;
+                            }
+                            echo "<input type='hidden' name='id_registers[]' value='{$row['id_register']}'>";
+                            echo "<td><input type='number' name='mileage_{$row['id_register']}' value='" . htmlspecialchars($row['mileage']) . "'></td>";
+                            echo "<td><input type='date' name='entry_date_{$row['id_register']}' value='" . htmlspecialchars($row['entry_date']) . "'></td>";
+                            echo "<td><input type='text' name='descript_{$row['id_register']}' value='" . htmlspecialchars($row['descript']) . "'></td>";
+
+                            echo "</tr>";
+                        }
+                    ?>
+                </table>
         </div>
             <div class="msg_container">
                 <?php if (isset($message)) echo $message; ?>

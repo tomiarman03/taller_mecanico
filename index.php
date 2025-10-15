@@ -97,41 +97,40 @@
                     }
                         
                     foreach ($grouped as $id => $vehicle) {
-                        echo "<tr>";
-                        echo "<td><div class='camp_table'>" . $vehicle['client']['name'] . "</div></td>";
-                        echo "<td><div class='camp_table'>" . $vehicle['client']['surname'] . "</div></td>";
-                        echo "<td><div class='camp_table'>" . $vehicle['client']['phone'] . "</div></td>";
-                        echo "<td><div class='camp_table'>" . $vehicle['client']['brand'] . "</div></td>";
-                        echo "<td><div class='camp_table'>" . $vehicle['client']['model'] . "</div></td>";
-                        echo "<td><div class='camp_table'>" . $vehicle['client']['year_model'] . "</div></td>";
-                        echo "<td><div class='camp_table'>" . $vehicle['client']['patent'] . "</div></td>";
+                    $rowspan = count($vehicle['entries']);
+                    $first = true;
 
-                        echo "<td><div class='camp_table'>";
                         foreach ($vehicle['entries'] as $entry) {
-                            echo number_format($entry['mileage'], 0, ',', '.') . "Km<br>";
-                        }
-                        echo "</div></td>";
+                            echo "<tr>";
 
-                        echo "<td><div class='camp_table'>";
-                        foreach ($vehicle['entries'] as $entry) {
-                            echo date("d/m/Y", strtotime($entry['entry_date'])) . "<br>";
-                        }
-                        echo "</div></td>";
+                            if ($first) {
+                                echo "<td rowspan='$rowspan'><div class='camp_table'>{$vehicle['client']['name']}</div></td>";
+                                echo "<td rowspan='$rowspan'><div class='camp_table'>{$vehicle['client']['surname']}</div></td>";
+                                echo "<td rowspan='$rowspan'><div class='camp_table'>{$vehicle['client']['phone']}</div></td>";
+                                echo "<td rowspan='$rowspan'><div class='camp_table'>{$vehicle['client']['brand']}</div></td>";
+                                echo "<td rowspan='$rowspan'><div class='camp_table'>{$vehicle['client']['model']}</div></td>";
+                                echo "<td rowspan='$rowspan'><div class='camp_table'>{$vehicle['client']['year_model']}</div></td>";
+                                echo "<td rowspan='$rowspan'><div class='camp_table'>{$vehicle['client']['patent']}</div></td>";
+                                $first = false;
+                            }
 
-                        echo "<td><div class='camp_table'>";
-                        foreach ($vehicle['entries'] as $entry) {
-                            echo htmlspecialchars($entry['descript']) . "<br>";
-                        }
-                        echo "</div></td>";
+                            echo "<td><div class='camp_table'>" . number_format($entry['mileage'], 0, ',', '.') . "Km</div></td>";
+                            echo "<td><div class='camp_table'>" . date("d/m/Y", strtotime($entry['entry_date'])) . "</div></td>";
+                            echo "<td><div class='camp_table'>" . htmlspecialchars($entry['descript']) . "</div></td>";
 
-                        echo "<td class='edit_camp_table'>
-                                <div class='camp_table'>
-                                    <button type='button' class='edit_btn' onclick=\"window.location.href='regedit.php?id_vehicle=$id'\">
-                                        <img src='images/edit_icon.png'>
-                                    </button>
-                                </div>
-                            </td>";
-                        echo "</tr>";
+                            // Solo mostrar el botón una vez por grupo
+                            if ($first === false && $entry === $vehicle['entries'][0]) {
+                                echo "<td rowspan='$rowspan' class='edit_camp_table'>
+                                        <div class='camp_table'>
+                                            <button type='button' class='edit_btn' onclick=\"window.location.href='regedit.php?id_vehicle=$id'\">
+                                                <img src='images/edit_icon.png'>
+                                            </button>
+                                        </div>
+                                    </td>";
+                            }
+
+                            echo "</tr>";
+                        }
                     }
                     echo "</table>";
                 } else {
