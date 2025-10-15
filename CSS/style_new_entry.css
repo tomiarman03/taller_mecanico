@@ -1,0 +1,79 @@
+@font-face {
+    font-family: 'Oswald';
+    src: url('../fonts/Oswald-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: "Oswald", sans-serif;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+.form_container{
+    display: flex;
+    flex-direction: row;
+    background-color: #CCC;
+    padding: 20px;
+    border: inset black 3px;
+    gap: 20px;
+}
+
+.camp_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding: 20px;
+    border: inset black 2px;
+}
+
+label{
+    margin-bottom: 10px;
+}
+
+.form_btns_container{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.form_btn{
+    display: flex;
+    font-family: "Oswald", sans-serif;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: white;
+    cursor: pointer;
+    transform: scale(1);
+    transition: 0.1s;
+}
+
+.form_btn:focus{
+    transform: scale(0.97);
+    transition: 0.1s;
+}
+
+.msg_container {
+    position: relative;
+    height: 60px;
+}
+
+.success_txt, .error_txt {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #8afc55;
+    padding-inline: 5px;
+    border-radius: 2px;
+    white-space: nowrap;
+}

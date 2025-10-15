@@ -1,0 +1,120 @@
+@font-face {
+    font-family: 'Oswald';
+    src: url('../fonts/Oswald-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: "Oswald", sans-serif;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+title{
+    display: none;
+}
+
+.main_container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1{
+    font-size: 40px;
+    font-weight: 400;
+}
+
+.modify_form{
+    display: flex;
+    flex-direction: column;
+    background-color: #AAA;
+    border: inset black 3px;
+    padding: 15px;
+    margin-bottom: 40px;
+}
+
+td {
+    border: inset black 2px;
+    padding: 5px 0px;
+    background-color: white;
+    text-align: center;
+}
+
+
+.main_camp_table{
+    background-color: #fc5555;
+}
+
+.camp_table {
+    display: block;
+    text-align: center;
+}
+
+input, textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 2px;
+    box-sizing: border-box;
+    text-align: center;
+    border: none;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+}
+
+.msg_container{
+    position: relative;
+    min-height: 15px;
+}
+
+.success_txt{
+    background-color: #8afc55;
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding-inline: 5px;
+    border-radius: 2px;
+}
+
+.error_txt{
+    background-color: #fc5555;
+    position: absolute;
+    bottom: 100%;
+    margin-bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding-inline: 5px;
+    border-radius: 2px;
+}
+
+.btns_container{
+    display: flex;
+    gap: 15px;
+}
+
+.input_btns{
+    font-family: "Oswald", sans-serif;
+    display: flex;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: white;
+    cursor: pointer;
+    transform: scale(1);
+    transition: 0.1s;
+}
+
+.input_btns:focus{
+    transform: scale(0.97);
+    transition: 0.1s;
+}

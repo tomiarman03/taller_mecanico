@@ -1,0 +1,15 @@
+<?php
+include 'connection.php';
+
+try {
+    $db->exec("DROP TABLE IF EXISTS register");
+    $db->exec("DROP TABLE IF EXISTS vehicles");
+    $db->exec("DROP TABLE IF EXISTS clients");
+
+    echo "Tablas eliminadas correctamente";
+} catch (Exception $e) {
+    die("Error al eliminar tablas: " . $e->getMessage());
+}
+?>
+
+PEGAR EN INDEX.PHP
