@@ -21,6 +21,12 @@ body {
 
 form{
     display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form_container{
+    display: flex;
     flex-direction: row;
     gap: 20px;
 }
@@ -36,4 +42,26 @@ form{
 
 label{
     margin-bottom: 10px;
+}
+
+.form_btns_container{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.form_btn{
+    display: flex;
+    font-family: "Oswald", sans-serif;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: white;
+    cursor: pointer;
+    transform: scale(1);
+    transition: 0.1s;
+}
+
+.form_btn:focus{
+    transform: scale(0.97);
+    transition: 0.1s;
 }

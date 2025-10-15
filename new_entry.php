@@ -1,3 +1,11 @@
+<?php
+if (isset($_GET['id_vehicle'])) {
+    $id_vehicle = $_GET['id_vehicle'];
+} else {
+    die("No se especificó el vehículo.");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,20 +16,47 @@
 </head>
 <body>
     <h1>NUEVO INGRESO</h1>
-    <div class="form_container">
-        <form action="new_entry.php">
-            <div class="camp_container">
-                <label for="mileage">Kilometraje</label>
-                <input type="number" name="mileage" required>
+    <div class="">
+        <form method="post" action="new_entry.php?id_vehicle=<?= $id_vehicle ?>">
+            <div class="form_container">
+                <div class="camp_container">
+                    <label for="mileage">Kilometraje</label>
+                    <input type="number" name="mileage" required>
+                </div>
+                <div class="camp_container">
+                    <label for="entry_date">Fecha de ingreso</label>
+                    <input type="date" name="entry_date" required>
+                </div>
+                <div class="camp_container">
+                    <label for="descript">Descripción</label>
+                    <input type="text" name="descript" required>
+                </div>
             </div>
-            <div class="camp_container">
-                <label for="entry_date">Fecha de ingreso</label>
-                <input type="date" name="entry_date" required>
+            <div class="msg_container">
+
             </div>
-            <div class="camp_container">
-                <label for="descript">Descripción</label>
-                <input type="text" name="descript" required>
-            </div>                        
+            <div class="form_btns_container">
+                <input type="submit" class="form_btn" name="submit" value="Ingresar">
+                <button type="button" class="form_btn" onclick="window.location.href='regedit.php?id_vehicle=<?= $id_vehicle ?>'">Volver</button>
+            </div>
+            <?php
+                if (isset($_POST['submit'])) {
+                    $mileage = $_POST['mileage'];
+                    $entry_date = $_POST['entry_date'];
+                    $descript = $_POST['descript'];
+
+                    $stmt = $db->prepare("SELECT id_client FROM vehicles WHERE id = ?");
+                    $stmt->execute([$id_vehicle]);
+                    $id_client = $stmt->fetchColumn();
+
+                    $insert = "INSERT INTO register (id_client, id_vehicle, mileage, entry_date, descript) VALUES (?, ?, ?, ?, ?)";
+                    $stmt = $db->prepare($insert);
+                    $stmt->execute([$id_client, $id_vehicle, $mileage, $entry_date, $descript]);
+
+                    echo "<div class='success_txt'>Ingreso agregado correctamente.</div>";
+                }
+            ?>
+
         </form>
     </div>
 </body>

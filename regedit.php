@@ -113,7 +113,7 @@
             </div>
                 <div class="btns_container">
                     <button type="submit" class="input_btns" name="modify_btn">Modificar</button>
-                    <button type="button" class="input_btns" onclick="window.location.href='new_entry.php'">Nuevo ingreso</button>
+                    <button type="button" class="input_btns" onclick="window.location.href='new_entry.php?id_vehicle=<?= $row['id_vehicle'] ?>'">Ingresar nuevo registro</button>
                     <button type="button" class="input_btns" onclick="window.location.href='index.php'">Volver</button>
                 </div>
             </form>
