@@ -65,12 +65,24 @@ h1{
     transition: 0.1s;
 }
 
+.register_table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
 td{
     border: inset black 3px;
     padding: 5px;
     padding-inline: 10px;
     justify-content: center;
+    white-space: nowrap;
     background-color: white;
+}
+
+.descript_camp{
+    white-space: normal;
+    overflow-wrap: break-word;
 }
 
 .main_camp_table{

@@ -116,7 +116,7 @@
 
                             echo "<td><div class='camp_table'>" . number_format($entry['mileage'], 0, ',', '.') . "Km</div></td>";
                             echo "<td><div class='camp_table'>" . date("d/m/Y", strtotime($entry['entry_date'])) . "</div></td>";
-                            echo "<td><div class='camp_table'>" . htmlspecialchars($entry['descript']) . "</div></td>";
+                            echo "<td class='descript_camp'><div class='camp_table'>" . htmlspecialchars($entry['descript']) . "</div></td>";
 
                             // Solo mostrar el botón una vez por grupo
                             if ($first === false && $entry === $vehicle['entries'][0]) {
