@@ -84,8 +84,19 @@
             <form action="regedit.php" method="POST">
                 <input type="hidden" name="id_client" value="<?= $rowPrincipal['id_client'] ?>">
                 <input type="hidden" name="id_vehicle" value="<?= $rowPrincipal['id_vehicle'] ?>">
-                <input type='hidden' name='id_registers[]' value='<?= $row['id_register'] ?>'>   
                 <table class="mod_table" style="border: 2px inset black; border-collapse: collapse;">
+                    <colgroup>
+                        <col style="width: 8%;">   <!-- Nombre -->
+                        <col style="width: 8%;">   <!-- Apellido -->
+                        <col style="width: 8%;">  <!-- Teléfono -->
+                        <col style="width: 8%;">   <!-- Marca -->
+                        <col style="width: 10%;">   <!-- Modelo -->
+                        <col style="width: 5%;">   <!-- Año -->
+                        <col style="width: 5%;">   <!-- Patente -->
+                        <col style="width: 6%;">  <!-- Kilometraje -->
+                        <col style="width: 8%;">  <!-- Fecha de ingreso -->
+                        <col style="width: 26%;">  <!-- Descripción -->
+                    </colgroup>
                     <tr>
                         <td class="main_camp_table">Nombre</td>
                         <td class="main_camp_table">Apellido</td>
@@ -100,7 +111,6 @@
                     </tr>
                     <?php
                         $first = true;
-                        $rowPrincipal = $rows[0];
                         foreach ($rows as $row) {
                             echo "<tr>";
 
