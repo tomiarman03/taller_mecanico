@@ -69,6 +69,7 @@
                             <td class='main_camp_table'><div class='camp_table'>Fecha de ingreso</div></td>
                             <td class='main_camp_table'><div class='camp_table'>Descripción</div></td>
                             <td class='main_camp_table'><div class='camp_table'></div></td>
+                            <td class='main_camp_table'><div class='camp_table'></div></td>
                         </tr>";
                 
                     $grouped = [];
@@ -116,15 +117,29 @@
 
                             echo "<td><div class='camp_table'>" . number_format($entry['mileage'], 0, ',', '.') . "Km</div></td>";
                             echo "<td><div class='camp_table'>" . date("d/m/Y", strtotime($entry['entry_date'])) . "</div></td>";
-                            echo "<td><div class='camp_table'>" . htmlspecialchars($entry['descript']) . "</div></td>";
+                            echo "<td class='descript_camp'><div class='camp_table'>" . htmlspecialchars($entry['descript']) . "</div></td>";
 
                             // Solo mostrar el botón una vez por grupo
                             if ($first === false && $entry === $vehicle['entries'][0]) {
-                                echo "<td rowspan='$rowspan' class='edit_camp_table'>
+                                echo "<td rowspan='$rowspan' class='mod_camp_table'>
                                         <div class='camp_table'>
-                                            <button type='button' class='edit_btn' onclick=\"window.location.href='regedit.php?id_vehicle=$id'\">
+                                            <button type='button' class='mod_btn' onclick=\"window.location.href='regedit.php?id_vehicle=$id'\">
                                                 <img src='images/edit_icon.png'>
                                             </button>
+                                        </div>
+                                    </td>";
+                            }
+
+                            if ($first === false && $entry === $vehicle['entries'][0]) {
+                                echo "<td rowspan='$rowspan' class='mod_camp_table'>
+                                        <div class='camp_table'>
+                                            <form method='POST' action='delete_register.php' onsubmit=\"return confirm('¿Estás seguro de que querés eliminar este registro?')\">
+                                                <input type='hidden' name='id_vehicle' value='$id'>
+                                                <input type='hidden' name='redirect' value='index.php'>
+                                                <button type='submit' class='mod_btn'>
+                                                    <img src='images/delete_icon.png'>
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>";
                             }
@@ -166,5 +181,10 @@
             ?>
         </div>
     </div>
+    <?php if (isset($_GET['deleted']) && $_GET['deleted'] == 1): ?>
+    <script>
+        alert("Vehículo eliminado correctamente.");
+    </script>
+    <?php endif; ?>
 </body>
 </html>

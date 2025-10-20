@@ -21,7 +21,7 @@
                         <label for="surname">Apellido</label>
                         <input type="text" name="surname" required>
                         <label for="phone">Teléfono</label>
-                        <input type="text" name="phone" required>
+                        <input type="number" name="phone" required>
                     </div>
                 </div>
                 <div class="form_container">
