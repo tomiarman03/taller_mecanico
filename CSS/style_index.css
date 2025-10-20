@@ -94,7 +94,7 @@ td{
     justify-content: center;
 }
 
-.edit_btn{
+.mod_btn{
     background-color: white;
     border: none;
     padding: 0;
@@ -103,12 +103,12 @@ td{
     transition: 0.1s;
 }
 
-.edit_btn:focus{
+.mod_btn:focus{
     transform: scale(0.9);
     transition: 0.1s;  
 }
 
-.edit_camp_table{
+.mod_camp_table{
     padding-inline: 12px;
 }
 
