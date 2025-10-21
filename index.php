@@ -133,13 +133,9 @@
                             if ($first === false && $entry === $vehicle['entries'][0]) {
                                 echo "<td rowspan='$rowspan' class='mod_camp_table'>
                                         <div class='camp_table'>
-                                            <form method='POST' action='delete_register.php' onsubmit=\"return confirm('¿Estás seguro de que querés eliminar este registro?')\">
-                                                <input type='hidden' name='id_vehicle' value='$id'>
-                                                <input type='hidden' name='redirect' value='index.php'>
-                                                <button type='submit' class='mod_btn'>
-                                                    <img src='images/delete_icon.png'>
-                                                </button>
-                                            </form>
+                                            <button type='button' class='mod_btn' onclick='abrirModal($id)'>
+                                                <img src='images/delete_icon.png'>
+                                            </button>
                                         </div>
                                     </td>";
                             }
@@ -181,10 +177,27 @@
             ?>
         </div>
     </div>
-    <?php if (isset($_GET['deleted']) && $_GET['deleted'] == 1): ?>
+    <div id="modalConfirm" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+        background:rgba(0,0,0,0.5); justify-content:center; align-items:center;">
+        <div class="del_msg_content">
+            <p>¿Seguro que querés eliminar este registro?</p>
+            <form class="delete_form" method="POST" action="delete_register.php">
+                <input type="hidden" name="id_vehicle" id="deleteId">
+                <input type="hidden" name="redirect" value="index.php">
+                <button type="submit" class="confirm_del_btn">Sí, eliminar</button>
+                <button type="button" class="not_confirm_del_btn" onclick="cerrarModal()">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
     <script>
-        alert("Vehículo eliminado correctamente.");
+    function abrirModal(id) {
+        document.getElementById('deleteId').value = id;
+        document.getElementById('modalConfirm').style.display = 'flex';
+    }
+    function cerrarModal() {
+        document.getElementById('modalConfirm').style.display = 'none';
+    }
     </script>
-    <?php endif; ?>
 </body>
 </html>

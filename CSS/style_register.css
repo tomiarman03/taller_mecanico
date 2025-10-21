@@ -14,8 +14,7 @@ title{
 }
 
 h1{
-    font-size: 40px;
-    font-weight: 400;
+    font-size: 30px;
 }
 
 .main_container{
@@ -65,100 +64,21 @@ h1{
     transition: 0.1s;
 }
 
-.register_table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: auto;
-}
-
 td{
-    border: inset black 3px;
-    padding: 5px;
+    border: inset black 2px;
+    padding: 10px;
     padding-inline: 10px;
     justify-content: center;
-    white-space: nowrap;
     background-color: white;
 }
 
-.descript_camp{
-    white-space: normal;
-    overflow-wrap: break-word;
-}
-
-.main_camp_table{
+.main_camp_content{
     background-color: #fc5555;
 }
 
 .camp_table{
     display: flex;
     justify-content: center;
-}
-
-.mod_btn{
-    background-color: white;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    transform: scale(1);
-    transition: 0.1s;
-}
-
-.mod_btn:focus{
-    transform: scale(0.9);
-    transition: 0.1s;  
-}
-
-.mod_camp_table{
-    padding-inline: 12px;
-}
-
-.del_msg_content{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 10px;
-    background:#fff; 
-    padding:20px; 
-    border-radius:8px; 
-    text-align:center; 
-    min-width:300px;
-}
-
-.delete_form{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
-
-.confirm_del_btn{
-    display: flex;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    background-color: #fc5555;
-    cursor: pointer;
-    transform: scale(1);
-    transition: 0.1s;
-}
-
-.confirm_del_btn:focus{
-    transform: scale(0.97);
-    transition: 0.1s;
-}
-
-.not_confirm_del_btn{
-    display: flex;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    background-color: white;
-    cursor: pointer;
-    transform: scale(1);
-    transition: 0.1s;
-}
-
-.not_confirm_del_btn:focus{
-    transform: scale(0.97);
-    transition: 0.1s;
 }
 
 .pagination{
@@ -191,4 +111,3 @@ td{
     transform: scale(0.97);
     transition: 0.1s;
 }
-
